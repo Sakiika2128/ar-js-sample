@@ -15,28 +15,12 @@
       embedded
       arjs="sourceType: webcam; debugUIEnabled: false;"
     >
-    <!-- 近くの建物 -->
-      <!-- <a-text
-        value="テキスト"
-        look-at="[gps-camera]"
-        scale="50 50 50"
-        gps-entity-place="latitude: 35.70427659988447; longitude: 139.63795182937614;"
-      ></a-text> -->
       <a-box
         material="color: red"
         gps-entity-place="latitude: 35.70427659988447; longitude: 139.63795182937614;"
-        scale="10 10 10"
-        position="0 50 0"
+        scale="3 3 3"
+        position="0 20 0"
       ></a-box>
-      <button id="start">Start Geolocation</button>
-  <script>
-    document.getElementById('start').onclick = function() {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => alert(`lat: ${pos.coords.latitude}, lon: ${pos.coords.longitude}`),
-        (err) => alert('位置情報取得エラー:' + err.message)
-      );
-    };
-  </script>
       <a-camera gps-camera rotation-reader> </a-camera>
     </a-scene>
   </body>
