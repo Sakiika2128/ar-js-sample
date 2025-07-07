@@ -28,6 +28,15 @@
         scale="30 30 30"
         position="0 50 0"
       ></a-box>
+      <button id="start">Start Geolocation</button>
+  <script>
+    document.getElementById('start').onclick = function() {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => alert(`lat: ${pos.coords.latitude}, lon: ${pos.coords.longitude}`),
+        (err) => alert('位置情報取得エラー:' + err.message)
+      );
+    };
+  </script>
       <a-camera gps-camera rotation-reader> </a-camera>
     </a-scene>
   </body>
