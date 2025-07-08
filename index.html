@@ -15,23 +15,17 @@
       embedded
       arjs="sourceType: webcam; debugUIEnabled: false;"
     >
-    <!-- GLBファイルを読み込みしてみる -->
-    <a-assets>
-      <a-asset-item id="apple" src="apple.glb"></a-asset-item>
-    </a-assets>
-    <a-entity
-      gps-entity-place="latitude: 35.7042585; longitude: 139.6380949;"
-      gltf-model="#apple"
-      scale="1 1 1"
-      position="0 5 0"
-    ></a-entity>
       <!--  ホテルSぷり -->
-      <a-box
-        material="color: red"
-        gps-entity-place="latitude: 35.7046834; longitude: 139.6383779;"
-        scale="10 10 10"
-        position="0 150 0"
-      ></a-box>
+      <!-- GLBファイルを読み込みしてみる -->
+      <a-assets>
+        <a-asset-item id="apple" src="apple.glb"></a-asset-item>
+      </a-assets>
+      <a-entity
+        gps-entity-place="latitude: 35.7042585; longitude: 139.6380949;"
+        gltf-model="#apple"
+        scale="1 1 1"
+        position="0 5 0"
+      ></a-entity>
       <!-- サイゼ -->
       <a-sphere
         material="color: yellow"
