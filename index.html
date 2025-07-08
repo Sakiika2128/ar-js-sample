@@ -15,6 +15,16 @@
       embedded
       arjs="sourceType: webcam; debugUIEnabled: false;"
     >
+    <!-- GLBファイルを読み込みしてみる -->
+    <a-assets>
+      <a-asset-item id="onigiri" src="onigiri.glb"></a-asset-item>
+    </a-assets>
+    <a-entity
+      gps-entity-place="latitude: 35.7042585; longitude: 139.6380949;"
+      gltf-model="#onigiri"
+      scale="10 10 10"
+      position="0 50 0"
+    ></a-entity>
       <!--  ホテルSぷり -->
       <a-box
         material="color: red"
