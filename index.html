@@ -27,12 +27,23 @@
         position="0 150 0"
       ></a-entity>
       <!-- サイゼ -->
-      <a-sphere
+      <!-- フォークのGLBファイルを読み込みしてみる -->
+       <a-assets>
+        <a-asset-item id="fork" src="fork.glb"></a-asset-item>
+      </a-assets>
+      <a-entity
+        gps-entity-place="latitude: 35.7030289; longitude: 139.6366734;"
+        gltf-model="#fork"
+        scale="10 10 10"
+        position="0 100 0"
+        rotation="90 0 0"
+      ></a-entity>
+      <!-- <a-sphere
         material="color: yellow"
         gps-entity-place="latitude: 35.7030289; longitude: 139.6366734;"
         scale="5 5 5"
         position="0 100 0"
-      ></a-sphere>
+      ></a-sphere> -->
       <a-camera gps-camera="minDistance: 10" rotation-reader> </a-camera>
     </a-scene>
   </body>
