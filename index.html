@@ -27,15 +27,16 @@
         position="0 150 0"
       ></a-entity>
       <!-- サイゼ -->
-      <!-- フォークのGLBファイルを読み込みしてみる -->
+      <!-- モーション付きのGLBファイルを読み込みしてみる -->
        <a-assets>
         <a-asset-item id="minotauros_motion" src="minotauros_motion.glb"></a-asset-item>
       </a-assets>
       <a-entity
+        animation-mixer
         gps-entity-place="latitude: 35.7030289; longitude: 139.6366734;"
         gltf-model="#minotauros_motion"
         scale="80 80 80"
-        position="0 100 0"
+        position="0 0 0"
       ></a-entity>
       <!-- <a-sphere
         material="color: yellow"
