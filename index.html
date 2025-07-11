@@ -17,48 +17,56 @@
       embedded
       arjs="sourceType: webcam; debugUIEnabled: false;"
     >
-      <!--  阿佐ヶ谷駅南口付近 -->
-      <!-- りんごのGLBファイルを読み込みしてみる -->
+      <!-- おにぎりのGLBファイルを読み込みしてみる -->
       <a-assets>
-        <a-asset-item id="apple" src="apple.glb"></a-asset-item>
+        <a-asset-item id="onigiri" src="onigiri.glb"></a-asset-item>
       </a-assets>
       <a-entity
         gps-entity-place="latitude: 35.6585502; longitude: 139.7452046;"
-        gltf-model="#apple"
+        gltf-model="#onigiri"
         scale="100 100 100"
-        position="0 150 0"
+        position="0 0 0"
       ></a-entity>
-      <!-- サイゼ -->
-      <!-- モーション付きのGLBファイルを読み込みしてみる -->
-       <!-- <a-assets>
-        <a-asset-item id="minotauros_motion" src="minotauros_motion.glb"></a-asset-item>
-      </a-assets> -->
-      <a-box
+
+      <!-- 画像を配置してみる（東京ペンギン） -->
+      <a-image
+        src="MTKO-044.png"
+        gps-entity-place="latitude: 35.7046363; longitude: 139.6383635"
+        look-at="[gps-camera]"
+        scale="10 10 10"
+        position="0 100 0"
+      >
+      </a-image>
+
+      <!-- 画像を配置してみる（おいなり） -->
+       <a-image
+        src="M-07069.png"
+        gps-entity-place="latitude: 35.7044872; longitude: 139.6381697"
+        look-at="[gps-camera]"
+        scale="30 30 30"
+        position="0 150 0"
+       ></a-image>
+      <!-- 青いボックス -->
+      <!-- <a-box
         material="color: blue"
         gps-entity-place="latitude: 35.6587613; longitude: 139.7454943;"
         scale="5 5 5"
         position="0 100 0"
-      ></a-box>
+      ></a-box> -->
 
       <!-- ライトの追加 -->
       <a-light type="ambient" color="#ffffff" intensity="1.2"></a-light>
       <a-light type="directional" color="#ffffff" intensity="1.0" position="1 1 0"></a-light>
-<!-- 
-      <a-entity
-        animation-mixer
-        gps-entity-place="latitude: 35.6584213; longitude: 139.7456753;"
-        gltf-model="#minotauros_motion"
-        scale="30 30 30"
-        rotation="0 270 0"
-      ></a-entity> -->
 
-      <!-- 黄色い球体を配置 -->
+      <!-- 黄色いスフィア -->
       <a-sphere
         material="color: yellow"
         gps-entity-place="latitude: 35.6586382; longitude: 139.7452157;"
         scale="5 5 5"
         position="0 100 0"
       ></a-sphere>
+
+      <!-- カメラ -->
       <a-camera gps-camera="minDistance: 10" rotation-reader> </a-camera>
     </a-scene>
   </body>
