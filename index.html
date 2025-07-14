@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 
   </head>
 
@@ -25,6 +26,9 @@
         <img id="cloudy" src="./weathers/cloudy.png" title="cloudy">
         <img id="rainy" src="./weathers/MSRD23-003-0.png" title="rain">
         <img id="snowy" src="./weathers/snowy.png" title="snowy">
+
+        <!-- シャッターイベント -->
+         <img id="shuttered" src="./M-03013.png" title="shuttered">
       </a-assets>
 
       <!-- 天気 -->
@@ -40,10 +44,30 @@
         gps-entity-place="latitude: 35.7047621; longitude: 139.6362912;">
       </a-entity>
 
+      <!-- カメラボタン -->
+      <button id="shutter-btn" title="shutter-btn">
+        <i class="bi bi-camera"></i> 
+      </button>
+
       <!-- カメラ -->
       <a-camera gps-camera rotation-reader> </a-camera>
     </a-scene>
   </body>
+  <style>
+    #shutter-btn {
+      position: absolute; 
+      bottom: 20px; 
+      left: 50%; 
+      transform: translateX(-50%);
+      padding: 12px 20px; 
+      font-size: 18px; 
+      border-radius: 10px; 
+      border: none;
+      background-color: #6fcfff; 
+      color: white; 
+      z-index: 999;
+    }
+  </style>
   <script>
       window.addEventListener('load', () => {
         // 適当に場所を指定して緯度、経度を指定
@@ -123,6 +147,21 @@
 
             textAnchor.appendChild(textEl);
           });
+
+          // シャッターイベント
+          const btn = document.getElementById('shutter-btn');
+          let shutteredImgId = '#shuttered';
+
+          btn.addEventListener('click', () => {
+            const shutteredImage = document.createElement('a-image');
+            shutteredImage.setAttribute('src', shutteredImgId);
+            shutteredImage.setAttribute('position', '-10 -30 -10');
+            shutteredImage.setAttribute('scale', '10 10 10');
+            shutteredImage.setAttribute('rotate', '0 45 0');
+            shutteredImage.setAttribute('look-at', '[gps-camera]');
+            imageAnchor.appendChild(shutteredImage);
+          });
+
         });
   </script>
 </html>
