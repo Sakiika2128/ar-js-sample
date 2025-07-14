@@ -18,13 +18,13 @@
       arjs="sourceType: webcam; debugUIEnabled: false;"
     >
 
-      <a-assets>
+      <a-assets timeout="10000">
         <!-- 天気 -->
-        <img id="unknown" src="loading.gif" title="unknown">
-        <img id="sunny" src="/weathers/MBSL23-003-0.png" title="sunny">
-        <img id="cloudy" src="/weathers/cloudy.png" title="cloudy">
-        <img id="rainy" src="/weathers/MSRD23-003-0.png" title="rain">
-        <img id="snowy" src="/weathers/snowy.png" title="snowy">
+        <img id="unknown" src="./loading.gif" title="unknown">
+        <img id="sunny" src="./weathers/MBSL23-003-0.png" title="sunny">
+        <img id="cloudy" src="./weathers/cloudy.png" title="cloudy">
+        <img id="rainy" src="./weathers/MSRD23-003-0.png" title="rain">
+        <img id="snowy" src="./weathers/snowy.png" title="snowy">
       </a-assets>
 
       <!-- 天気 -->
@@ -60,16 +60,16 @@
 
             switch (weather) {
               case "Clear":
-                imgId = "#sunny";
+                imgId = "./weathers/MBSL23-003-0.png";
                 break;
               case "Clouds":
-                imgId = "#cloudy";
+                imgId = "./weathers/cloudy.png";
                 break;
               case "Rain":
-                imgId = "#rainy";
+                imgId = "./weathers/MSRD23-003-0.png";
                 break;
               case "Snow":
-                imgId = "#snowy";
+                imgId = "./weathers/snowy.png";
                 break;
             }
 
@@ -77,6 +77,7 @@
             imageEl.setAttribute('position', '0 50 0');
             imageEl.setAttribute('scale', '15 15 15');
             imageEl.setAttribute('title', weather);
+            imageEl.setAttribute('look-at', '[gps-camera]');
             imageAnchor.appendChild(imageEl);
 
             // 時間帯
@@ -99,9 +100,10 @@
 
             textEl.setAttribute('value', message);
             textEl.setAttribute('position', '0 50 0');
-            textEl.setAttribute('scale', '10 10 10');
+            textEl.setAttribute('scale', '20 20 20');
             textEl.setAttribute('align', 'center');
             textEl.setAttribute('color', '#ff0000');
+            textEl.setAttribute('font-weight', 'bold');
             textEl.setAttribute('look-at', '[gps-camera]');
 
             textAnchor.appendChild(textEl);
