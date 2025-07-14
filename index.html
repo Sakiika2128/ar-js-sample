@@ -32,6 +32,9 @@
         gps-entity-place="latitude: 35.7046486; longitude: 139.6383561;">
       </a-entity>
 
+      <!-- タップイベント -->
+      <a->
+
       <!-- 時間帯 -->
       <a-entity id="time-text-anchor"
         gps-entity-place="latitude: 35.7047621; longitude: 139.6362912;">
@@ -84,9 +87,10 @@
             imageEl.addEventListener('click', () => {
               const messageEl = document.createElement('a-text');
               messageEl.setAttribute('value', 'タップされました！');
-              messageEl.setAttribute('position', '0 70 0');
+              messageEl.setAttribute('position', '0 30 0');
               messageEl.setAttribute('scale', '10 10 10');
               messageEl.setAttribute('color', '#00ff00');
+              messageEl.setAttribute('font-weight', 'bold');
               messageEl.setAttribute('look-at', '[gps-camera]');
               imageAnchor.appendChild(messageEl);
             });
