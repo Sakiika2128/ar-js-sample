@@ -78,34 +78,33 @@
             imageEl.setAttribute('title', weather);
 
             anchor.appendChild(imageEl);
+
+            // 時間帯
+            const now = new Date();
+            const hour = now.getHours();
+            let message = 'こんにちは！'; 
+
+            if(hour >= 5 && hour < 11) {
+              message = '5:00~10:59です';
+            } else if(hour >= 11 && hour < 17) {
+              message = '11:00~16:59です';
+            } else if(hour >= 17 && hour < 19) {
+              message = '17:00~18:59です';
+            } else {
+              message = '19:00~です'
+            }
           });
 
-        // 時間帯
-        const now = new Date();
-        const hour = now.getHours();
-        let message = 'こんにちは！'; 
+          const anchor = document.getElementById('time-text-anchor');
+          const textEl = document.createElement('a-text');
 
+          textEl.setAttribute('value', message);
+          textEl.setAttribute('position', '0 50 0');
+          textEl.setAttribute('scale', '15 15 15');
+          textEl.setAttribute('align', 'center');
+          textEl.setAttribute('color', '#ffffff');
 
-        if(hour >= 5 && hour < 11) {
-          message = '5:00~10:59です';
-        } else if(hour >= 11 && hour < 17) {
-          message = '11:00~16:59です';
-        } else if(hour >= 17 && hour < 19) {
-          message = '17:00~18:59です';
-        } else {
-          message = '19:00~です'
-        }
-      });
-
-      const anchor = document.getElementById('time-text-anchor');
-      const textEl = document.createElement('a-text');
-
-      textEl.setAttribute('value', message);
-      textEl.setAttribute('position', '0 50 0');
-      textEl.setAttribute('scale', '15 15 15');
-      textEl.setAttribute('align', 'center');
-      textEl.setAttribute('color', '#ffffff');
-
-      anchor.appendChild(textEl);
+          anchor.appendChild(textEl);
+        });
   </script>
 </html>
