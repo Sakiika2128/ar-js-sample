@@ -80,6 +80,17 @@
             imageEl.setAttribute('look-at', '[gps-camera]');
             imageAnchor.appendChild(imageEl);
 
+            // タップイベント
+            imageEl.addEventListener('click', () => {
+              const messageEl = document.createElement('a-text');
+              messageEl.setAttribute('value', 'タップされました！');
+              messageEl.setAttribute('position', '0 70 0');
+              messageEl.setAttribute('scale', '10 10 10');
+              messageEl.setAttribute('color', '#00ff00');
+              messageEl.setAttribute('look-at', '[gps-camera]');
+              imageAnchor.appendChild(messageEl);
+            });
+
             // 時間帯
             const now = new Date();
             const hour = now.getHours();
