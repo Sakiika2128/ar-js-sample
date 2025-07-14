@@ -17,57 +17,55 @@
       embedded
       arjs="sourceType: webcam; debugUIEnabled: false;"
     >
-      <!-- おにぎりのGLBファイルを読み込みしてみる -->
-      <!-- <a-assets>
-        <a-asset-item id="onigiri" src="onigiri.glb"></a-asset-item>
-      </a-assets>
-      <a-entity
-        gps-entity-place="latitude: 35.6585502; longitude: 139.7452046;"
-        gltf-model="#onigiri"
-        scale="100 100 100"
-        position="0 0 0"
-      ></a-entity> -->
 
-      <!-- 画像を配置してみる（東京ペンギン） -->
-      <a-image
-        src="./MTKO-044.png"
-        gps-entity-place="latitude: 35.7046363; longitude: 139.6383635"
-        look-at="[gps-camera]"
-        scale="10 10 10"
-        position="0 100 0"
-      >
-      </a-image>
-
-      <!-- 画像を配置してみる（おいなり） -->
-       <a-image
-        src="./M-07069.png"
-        gps-entity-place="latitude: 35.7044872; longitude: 139.6381697"
-        look-at="[gps-camera]"
-        scale="5 5 5"
-        position="0 150 0"
-       ></a-image>
-      <!-- 青いボックス -->
-      <!-- <a-box
-        material="color: blue"
-        gps-entity-place="latitude: 35.6587613; longitude: 139.7454943;"
-        scale="5 5 5"
-        position="0 100 0"
-      ></a-box> -->
-
-      <!-- ライトの追加 -->
-      <a-light type="ambient" color="#ffffff" intensity="1.2"></a-light>
-      <a-light type="directional" color="#ffffff" intensity="1.0" position="1 1 0"></a-light>
-
-      <!-- 黄色いスフィア -->
-      <a-sphere
-        material="color: yellow"
-        gps-entity-place="latitude: 35.6586382; longitude: 139.7452157;"
-        scale="5 5 5"
-        position="0 100 0"
-      ></a-sphere>
+      <a-entity id="weather-text-anchor"
+        gps-entity-place="latitude: 35.7046486; longitude: 139.6383561;"
+      ></a-entity>
 
       <!-- カメラ -->
       <a-camera gps-camera="minDistance: 10" rotation-reader> </a-camera>
     </a-scene>
   </body>
+  <script>
+      window.addEventListener('load', () => {
+        // 適当に場所を指定して緯度、経度を指定
+        const lat = 35.7046486;
+        const lon = 139.6383561;
+        const apiKey = "85d58a3e59a7469a65d625479f26ff17";
+
+        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
+          .then(response => response.json())
+          .then(data => {
+            const weather = data.weather[0].main;
+            const anchor = document.getElementById('weather-text-anchor');
+            const textEl = document.createElement('a-text');
+            
+            let displayText = "";
+            switch (weather) {
+              case "Clear":anchor
+                displayText = "☀️";
+                break;
+              case "Clouds":anchor
+                displayText = "☁️";
+                break;
+              case "Rain":anchor
+                displayText = "☔️";
+                break;
+              case "Snow":anchor
+                displayText = "⛄️";
+                break;
+              default:anchor
+                displayText = "❓チェック中……";
+            }
+
+            textEl.setAttribute('value', displayText);
+            textEl.setAttribute('color', "#222");
+            textEl.setAttribute('align', 'center');
+            textEl.setAttribute('position', '0 3 0');
+            textEl.setAttribute('scale', '5 5 5');
+
+            anchor.appendChild(textEl);
+          });
+      });
+  </script>
 </html>
