@@ -20,17 +20,17 @@
 
       <a-assets>
         <!-- 天気 -->
-        <!-- <img id="unknown" src="loading.gif" title="unknown">
+        <img id="unknown" src="loading.gif" title="unknown">
         <img id="sunny" src="/weathers/MBSL23-003-0.png" title="sunny">
         <img id="cloudy" src="/weathers/cloudy.png" title="cloudy">
         <img id="rainy" src="/weathers/MSRD23-003-0.png" title="rain">
-        <img id="snowy" src="/weathers/snowy.png" title="snowy"> -->
+        <img id="snowy" src="/weathers/snowy.png" title="snowy">
       </a-assets>
 
       <!-- 天気 -->
-      <!-- <a-entity id="weather-image-anchor"
+      <a-entity id="weather-image-anchor"
         gps-entity-place="latitude: 35.7046486; longitude: 139.6383561;">
-      </a-entity> -->
+      </a-entity>
 
       <!-- 時間帯 -->
       <a-entity id="time-text-anchor"
@@ -44,41 +44,41 @@
   <script>
       window.addEventListener('load', () => {
         // 適当に場所を指定して緯度、経度を指定
-        // const lat = 35.7046486;
-        // const lon = 139.6383561;
-        // const apiKey = "85d58a3e59a7469a65d625479f26ff17";
+        const lat = 35.7046486;
+        const lon = 139.6383561;
+        const apiKey = "85d58a3e59a7469a65d625479f26ff17";
 
-        // fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
-        //   .then(response => response.json())
-        //   .then(data => {
-        //     const weather = data.weather[0].main;
-        //     const anchor = document.getElementById('weather-image-anchor');
-        //     const imageEl = document.createElement('a-image');
+        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
+          .then(response => response.json())
+          .then(data => {
+            const weather = data.weather[0].main;
+            const anchor = document.getElementById('weather-image-anchor');
+            const imageEl = document.createElement('a-image');
 
-        //     let imgId = "#unknown"; // デフォルト画像
+            let imgId = "#unknown"; // デフォルト画像
 
-        //     switch (weather) {
-        //       case "Clear":
-        //         imgId = "#sunny";
-        //         break;
-        //       case "Clouds":
-        //         imgId = "#cloudy";
-        //         break;
-        //       case "Rain":
-        //         imgId = "#rainy";
-        //         break;
-        //       case "Snow":
-        //         imgId = "#snowy";
-        //         break;
-        //     }
+            switch (weather) {
+              case "Clear":
+                imgId = "#sunny";
+                break;
+              case "Clouds":
+                imgId = "#cloudy";
+                break;
+              case "Rain":
+                imgId = "#rainy";
+                break;
+              case "Snow":
+                imgId = "#snowy";
+                break;
+            }
 
-        //     imageEl.setAttribute('src', imgId);
-        //     imageEl.setAttribute('position', '0 100 0');  // 高さは適宜調整
-        //     imageEl.setAttribute('scale', '10 10 10');
-        //     imageEl.setAttribute('title', weather);
+            imageEl.setAttribute('src', imgId);
+            imageEl.setAttribute('position', '0 50 0');  // 高さは適宜調整
+            imageEl.setAttribute('scale', '15 15 15');
+            imageEl.setAttribute('title', weather);
 
-        //     anchor.appendChild(imageEl);
-        //   });
+            anchor.appendChild(imageEl);
+          });
 
         // 時間帯
         const now = new Date();
