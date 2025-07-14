@@ -18,9 +18,16 @@
       arjs="sourceType: webcam; debugUIEnabled: false;"
     >
 
+      <a-assets>
+        <img id="sunny" src="MBSL23-003-0.png" title="sunny">
+        <img id="cloudy" src="cloudy.png" title="cloudy">
+        <img id="rainy" src="MSRD23-003-0.png" title="rain">
+        <img id="snowy" src="snowy.png" title="snowy">
+      </a-assets>
+
       <a-entity id="weather-text-anchor"
-        gps-entity-place="latitude: 35.7046486; longitude: 139.6383561;"
-      ></a-entity>
+        gps-entity-place="latitude: 35.7046486; longitude: 139.6383561;">
+      </a-entity>
 
       <!-- カメラ -->
       <a-camera gps-camera="minDistance: 10" rotation-reader> </a-camera>
@@ -38,33 +45,31 @@
           .then(data => {
             const weather = data.weather[0].main;
             const anchor = document.getElementById('weather-text-anchor');
-            const textEl = document.createElement('a-text');
-            
-            let displayText = "";
+            const imageEl = document.createElement('a-image');
+
+            let imgId = "#unknown"; // デフォルト画像
+
             switch (weather) {
-              case "Clear":anchor
-                displayText = "☀️";
+              case "Clear":
+                imgId = "#sunny";
                 break;
-              case "Clouds":anchor
-                displayText = "☁️";
+              case "Clouds":
+                imgId = "#cloudy";
                 break;
-              case "Rain":anchor
-                displayText = "☔️";
+              case "Rain":
+                imgId = "#rainy";
                 break;
-              case "Snow":anchor
-                displayText = "⛄️";
+              case "Snow":
+                imgId = "#snowy";
                 break;
-              default:anchor
-                displayText = "❓チェック中……";
             }
 
-            textEl.setAttribute('value', displayText);
-            textEl.setAttribute('color', "#222");
-            textEl.setAttribute('align', 'center');
-            textEl.setAttribute('position', '0 3 0');
-            textEl.setAttribute('scale', '5 5 5');
+            imageEl.setAttribute('src', imgId);
+            imageEl.setAttribute('position', '0 100 0');  // 高さは適宜調整
+            imageEl.setAttribute('scale', '10 10 10');
+            imageEl.setAttribute('title', weather);
 
-            anchor.appendChild(textEl);
+            anchor.appendChild(imageEl);
           });
       });
   </script>
