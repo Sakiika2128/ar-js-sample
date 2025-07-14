@@ -51,8 +51,9 @@
         fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
           .then(response => response.json())
           .then(data => {
+            // 天気
             const weather = data.weather[0].main;
-            const anchor = document.getElementById('weather-image-anchor');
+            const imageAnchor = document.getElementById('weather-image-anchor');
             const imageEl = document.createElement('a-image');
 
             let imgId = "#unknown"; // デフォルト画像
@@ -73,11 +74,10 @@
             }
 
             imageEl.setAttribute('src', imgId);
-            imageEl.setAttribute('position', '0 50 0');  // 高さは適宜調整
+            imageEl.setAttribute('position', '0 50 0');
             imageEl.setAttribute('scale', '15 15 15');
             imageEl.setAttribute('title', weather);
-
-            anchor.appendChild(imageEl);
+            imageAnchor.appendChild(imageEl);
 
             // 時間帯
             const now = new Date();
@@ -93,19 +93,19 @@
             } else {
               message = '19:00~です'
             }
+
+            const textAnchor = document.getElementById('time-text-anchor');
+            const textEl = document.createElement('a-text');
+
+            textEl.setAttribute('value', message);
+            textEl.setAttribute('position', '0 50 0');
+            textEl.setAttribute('scale', '10 10 10');
+            textEl.setAttribute('align', 'center');
+            textEl.setAttribute('color', '#ff0000');
+            textEl.setAttribute('look-at', '[gps-camera]');
+
+            textAnchor.appendChild(textEl);
           });
-
-          const anchor = document.getElementById('time-text-anchor');
-          const textEl = document.createElement('a-text');
-
-          textEl.setAttribute('value', message);
-          textEl.setAttribute('position', '0 50 0');
-          textEl.setAttribute('scale', '10 10 10');
-          textEl.setAttribute('align', 'center');
-          textEl.setAttribute('color', '#ff0000');
-          textEl.setAttribute('look-at', '[gps-camera]');
-
-          anchor.appendChild(textEl);
         });
   </script>
 </html>
