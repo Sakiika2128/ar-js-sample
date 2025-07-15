@@ -19,53 +19,93 @@
       arjs="sourceType: webcam; debugUIEnabled: false;"
     >
 
-      <a-assets timeout="10000">
-        <!-- 天気 -->
-        <img id="unknown" src="./loading.gif" title="unknown">
-        <img id="sunny" src="./weathers/MBSL23-003-0.png" title="sunny">
-        <img id="cloudy" src="./weathers/cloudy.png" title="cloudy">
-        <img id="rainy" src="./weathers/MSRD23-003-0.png" title="rain">
-        <img id="snowy" src="./weathers/snowy.png" title="snowy">
+    <!-- 画像などのアセットを読み込み -->
+    <a-assets>
+      <img id="sunny" title="sunny" src="./weathers/MBSL23-003-0.png">
+      <img id="cloudy" title="cloudy" src="./weathers/cloudy.png">
+      <img id="rainy" title="rainy" src="./weathers/MSRD23-003-0.png">
+    </a-assets>
 
-        <!-- シャッターイベント -->
-        <img id="shuttered" src="./M-03013.png" title="shuttered">
-      </a-assets>
+    <!-- メッセージ -->
+    <a-entity id="date-text-entity" gps-entity-place="latitude: 35.7043578; longitude: 139.6377436;">
+      <a-text
+        id="date-text"
+        value=""
+        position="0 20 0"
+        align="center"
+        color="#ffffff"
+        scale="20 20 20"
+      ></a-text>
+    </a-entity>
 
-      <!-- 天気 -->
-      <a-entity id="weather-image-anchor"
-        gps-entity-place="latitude: 35.7046486; longitude: 139.6383561;">
-      </a-entity>
+    <!-- 天気によって画像を切り替え表示 -->
+    <a-entity id="weather-image-anchor" gps-entity-place="latitude: 35.7044352; longitude: 139.6379162;">
 
-      <!-- 時間帯 -->
-      <a-entity id="time-text-anchor"
-        gps-entity-place="latitude: 35.7047621; longitude: 139.6362912;">
-      </a-entity>
-
-      <!-- カメラボタン -->
-      <button id="shutter-btn" title="shutter-btn">
-        <i class="bi bi-camera"></i> 
-      </button>
-
+    </a-entity>
+      
       <!-- カメラ -->
       <a-camera gps-camera rotation-reader> </a-camera>
     </a-scene>
   </body>
   <style>
-    #shutter-btn {
-      position: absolute; 
-      bottom: 20px; 
-      left: 50%; 
-      transform: translateX(-50%);
-      padding: 12px 20px; 
-      font-size: 18px; 
-      border-radius: 10px; 
-      border: none;
-      background-color: #6fcfff; 
-      color: white; 
-      z-index: 999;
+    #date-text {
+      mix-blend-mode: exclusion;
     }
   </style>
   <script>
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+
+    const lat = 35.7043578; 
+    const lon = 139.6377436;
+    let apiKey = '85d58a3e59a7469a65d625479f26ff17';
+
+    const display_message = `ART MARKET\nB-SIDE LABEL\n${year}.${month}.${day}`;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // テキスト追加
+      const textEntity = document.getElementById('date-text');
+      if(textEntity) {
+        textEntity.setAttribute('value', display_message);
+      }
+
+      // 天気によって出しわける
+      fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
+        .then(response => response.json())
+        .then(data => {
+          const weather = data.weather[0].main;
+          const imageAnchor = document.getElementById('weather-image-anchor');
+          const imageEl = document.createElement('a-image');
+
+          let imgId = "#unknown"; // デフォルト画像
+
+          switch (weather) {
+            case "Clear":
+              imgId = "#sunny";
+              break;
+            case "Clouds":
+              imgId = "#cloudy";
+              break;
+            case "Rain":
+              imgId = "#rainy";
+              break;
+            default :
+              imgId = "#unknown";
+              break;
+          }
+          
+          imageEl.setAttribute('src', imgId);
+          imageEl.setAttribute('position', '0 30 0');
+          imageEl.setAttribute('scale', '15 15 15');
+          imageEl.setAttribute('title', weather);
+          imageEl.setAttribute('look-at', '[gps-camera]');
+          imageAnchor.appendChild(imageEl);
+        });
+    });
+  </script>
+  <!-- <script>
       window.addEventListener('load', () => {
         // 適当に場所を指定して緯度、経度を指定
         const lat = 35.7046486;
@@ -160,5 +200,5 @@
           });
 
         });
-  </script>
+  </script> -->
 </html>
