@@ -18,54 +18,56 @@
       embedded
       arjs="sourceType: webcam; debugUIEnabled: false;"
     >
+    
+    <!-- オブジェクト -->
+    <a-entity gps-entity-place="latitude: 35.7046312; longitude: 139.6383689;">
+      <!-- 円柱 -->
+      <a-cylinder
+        position="0 18 0"
+        height="30"
+        radius="0.5"
+        color="#ffffff"
+        opacity="0.2"
+        material="
+          shader: flat; 
+          blending: additive;">
+      </a-cylinder>
 
-      <a-assets timeout="10000">
-        <!-- 天気 -->
-        <img id="unknown" src="./loading.gif" title="unknown">
-        <img id="sunny" src="./weathers/MBSL23-003-0.png" title="sunny">
-        <img id="cloudy" src="./weathers/cloudy.png" title="cloudy">
-        <img id="rainy" src="./weathers/MSRD23-003-0.png" title="rain">
-        <img id="snowy" src="./weathers/snowy.png" title="snowy">
+      <!-- ドーナツ状のもの -->
+      <a-torus
+        position="0 20 0"
+        radius="5"
+        radius-tubular="0.05"
+        color="#00ffff"
+        opacity="0.3"
+        material="shader: flat; blending: additive;"
+        animation="
+          property: rotation; 
+          to: 0 360 0; 
+          dur: 10000; 
+          loop: true;">
+      </a-torus>
 
-        <!-- シャッターイベント -->
-        <img id="shuttered" src="./M-03013.png" title="shuttered">
-      </a-assets>
-
-      <!-- 天気 -->
-      <a-entity id="weather-image-anchor"
-        gps-entity-place="latitude: 35.7046486; longitude: 139.6383561;">
-      </a-entity>
-
-      <!-- 時間帯 -->
-      <a-entity id="time-text-anchor"
-        gps-entity-place="latitude: 35.7047621; longitude: 139.6362912;">
-      </a-entity>
-
-      <!-- カメラボタン -->
-      <button id="shutter-btn" title="shutter-btn">
-        <i class="bi bi-camera"></i> 
-      </button>
+      <!-- 球体 -->
+      <a-sphere
+        position="0 20 0"
+        radius="0.4"
+        color="#ff66cc"
+        opacity="0.2"
+        animation="
+          property: scale;
+          to: 1.5 1.5 1.5;
+          dur: 2000;
+          dir: alternate;
+          loop: true;"></a-sphere>
+    </a-entity>
 
       <!-- カメラ -->
       <a-camera gps-camera rotation-reader> </a-camera>
     </a-scene>
   </body>
-  <style>
-    #shutter-btn {
-      position: absolute; 
-      bottom: 20px; 
-      left: 50%; 
-      transform: translateX(-50%);
-      padding: 12px 20px; 
-      font-size: 18px; 
-      border-radius: 10px; 
-      border: none;
-      background-color: #6fcfff; 
-      color: white; 
-      z-index: 999;
-    }
-  </style>
-  <script>
+  
+  <!-- <script>
       window.addEventListener('load', () => {
         // 適当に場所を指定して緯度、経度を指定
         const lat = 35.7046486;
@@ -160,5 +162,5 @@
           });
 
         });
-  </script>
+  </script> -->
 </html>
