@@ -9,63 +9,58 @@
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
+    <script src="https://unpkg.com/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
   </head>
 
   <body style="margin: 0; overflow: hidden;">
     <a-scene
+      renderer="alpha: true;"
+      background="transparent: true;"
       vr-mode-ui="enabled: false"
       embedded
       arjs="sourceType: webcam; debugUIEnabled: false;"
     >
 
-      <a-assets timeout="10000">
-        <!-- 天気 -->
-        <img id="unknown" src="./loading.gif" title="unknown">
-        <img id="sunny" src="./weathers/MBSL23-003-0.png" title="sunny">
-        <img id="cloudy" src="./weathers/cloudy.png" title="cloudy">
-        <img id="rainy" src="./weathers/MSRD23-003-0.png" title="rain">
-        <img id="snowy" src="./weathers/snowy.png" title="snowy">
-
-        <!-- シャッターイベント -->
-        <img id="shuttered" src="./M-03013.png" title="shuttered">
+      <a-assets>
+        <img id="img001" src="./images/out_001.png" title="out001">
+        <img id="img002" src="./images/out_002.png" title="out002">
+        <img id="img003" src="./images/out_003.png" title="out003">
+        <img id="img004" src="./images/out_004.png" title="out004">
+        <img id="img005" src="./images/out_005.png" title="out005">
+        <img id="img006" src="./images/out_006.png" title="out006">
+        <img id="img007" src="./images/out_007.png" title="out007">
+        <img id="img008" src="./images/out_008.png" title="out008">
+        <img id="img009" src="./images/out_009.png" title="out009">
+        <img id="img010" src="./images/out_010.png" title="out010">
       </a-assets>
 
-      <!-- 天気 -->
-      <a-entity id="weather-image-anchor"
-        gps-entity-place="latitude: 35.7046486; longitude: 139.6383561;">
+      <a-entity
+        gps-entity-place="latitude: 35.70468773985198; longitude: 139.638377606462;"
+        position="0 50 0"
+        scale="10 10 10"
+        look-at="[gps-camera]">
+          <a-image id="anime" src="#img001" transparent="true" alpha-test="0.5"></a-image>
       </a-entity>
-
-      <!-- 時間帯 -->
-      <a-entity id="time-text-anchor"
-        gps-entity-place="latitude: 35.7047621; longitude: 139.6362912;">
-      </a-entity>
-
-      <!-- カメラボタン -->
-      <button id="shutter-btn" title="shutter-btn">
-        <i class="bi bi-camera"></i> 
-      </button>
 
       <!-- カメラ -->
       <a-camera gps-camera rotation-reader> </a-camera>
     </a-scene>
   </body>
-  <style>
-    #shutter-btn {
-      position: absolute; 
-      bottom: 20px; 
-      left: 50%; 
-      transform: translateX(-50%);
-      padding: 12px 20px; 
-      font-size: 18px; 
-      border-radius: 10px; 
-      border: none;
-      background-color: #6fcfff; 
-      color: white; 
-      z-index: 999;
-    }
-  </style>
   <script>
+    let frame = 1;
+    const maxFrame = 10;
+    const animeImage = document.getElementById('anime');
+
+    setInterval(() => {
+      frame++;
+      if(frame > maxFrame) {
+        frame = 1;
+      }
+      const frameId = `#img${String(frame).padStart(3, '0')}`;
+      animeImage.setAttribute('src', frameId);
+    }, 100);
+  </script>
+  <!-- <script>
       window.addEventListener('load', () => {
         // 適当に場所を指定して緯度、経度を指定
         const lat = 35.7046486;
@@ -160,5 +155,5 @@
           });
 
         });
-  </script>
+  </script> -->
 </html>
