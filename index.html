@@ -48,122 +48,79 @@
   </body>
 </html>
 <script>
-  // 鬼火みたいなパーティクルを自動生成する
-  // const MAX_PARTICLES = 20;
-
-  // function createRandomSphere() {
-  //   const scene = document.querySelector('a-scene');
-  //   const sphere = document.createElement('a-sphere');
-
-  //   // サイズをランダムに設定
-  //   const radius = Math.random() * 0.15 + 0.05;
-  //   sphere.setAttribute('radius', radius);
-
-  //   // デフォルトの位置をランダム生成
-  //   const posX = Math.random() * 100;
-  //   const posY = Math.random() * 100;
-  //   const posZ = Math.random() * 100;
-  //   sphere.setAttribute('position', `${posX} ${posY} ${posZ}`);
-
-  //   // 色をランダムで変更
-  //   // colors = [赤、黄、黄緑、水色、紫]
-  //   const colors = ['#ff5e57', '#ffd32a', '#32ff7e', '#18dcff', '#7d5fff'];
-  //   const color = colors[Math.floor(Math.random() * colors.length)];
-  //   sphere.setAttribute('color', color);
-  //   // 透過
-  //   sphere.setAttribute('material', 'opacity: 0.7; transparent: true;');
-
-  //   // 移動方向（ランダム）
-  //   const toX = posX + (Math.random() * 10 - 5);
-  //   const toY = posY + (Math.random() * 10 - 5);
-  //   const toZ = posZ + (Math.random() * 10 - 5);
-  //   sphere.setAttribute('animation', {
-  //     property: 'position',
-  //     to: `${toX} ${toY} ${toZ}`,
-  //     dur: 5000 + Math.random() * 5000, // 5〜10秒で移動する
-  //     dir: 'alternate',
-  //     easing: 'easeInOutSine',
-  //     loop: true
-  //   });
-
-  //   // 丸を生成
-  //   sphere.setAttribute('geometry', {
-  //     primitive: 'sphere',
-  //     segments: 32
-  //   });
-
-  //   sphere.setAttribute('animation-mixer');
-  //   scene.appendChild(sphere);
-  // }
-
-  // // 画面が読み込まれたらパーティクルを生成する
-  // window.addEventListener('DOMContentLoaded', () => {
-  //   for(let i = 0; i < MAX_PARTICLES; i++) {
-  //     createRandomSphere();
-  //   }
-  // });
-
-
-  const MAX_PARTICLES = 20;
+  const MAX_PARTICLES = 80;
+  const LIFETIME = 8000; // パーティクルの寿命（ms）
 
   window.addEventListener('load', () => {
-      const scene = document.querySelector('a-scene');
-      for(let i = 0; i < MAX_PARTICLES; i++) {
-        const particle = document.createElement('a-entity');
+    const scene = document.querySelector('a-scene');
 
-        // デフォルト位置はランダムで
-        const posX = (Math.random() - 0.5) * 10;
-        const posY = Math.random() * 2 + 1;
-        const posZ = (Math.random() - 0.5) * 10;
+    function createParticle() {
+      const particle = document.createElement('a-entity');
 
-        // 色もランダム生成
-        const color = `hsl(${Math.random() * 360}, 100%, 70%)`;
+      // デフォルト位置はランダムで
+      const posX = (Math.random() - 0.5) * 10;
+      const posY = Math.random() * 2 + 1;
+      const posZ = (Math.random() - 0.5) * 10;
 
-        // サイズをランダム生成
-        const size = Math.random() * 0.15 + 0.05;
+      // 色もランダム生成
+      const color = `hsl(${Math.random() * 360}, 100%, 70%)`;
 
-        // 丸を生成
-        particle.setAttribute('geometry', {
-          primitive: 'sphere',
-          radius: size,
-          segments: 32
-        });
+      // サイズをランダム生成
+      const size = Math.random() * 0.15 + 0.05;
 
-        particle.setAttribute('position', `${posX} ${posY} ${posZ}`);
-        particle.setAttribute('material', {
-          color: color,
-          opacity: 0.7,
-          transparent: true,
-          side: 'double'
-        });
+      // 丸を生成
+      particle.setAttribute('geometry', {
+        primitive: 'sphere',
+        radius: size,
+        segments: 32
+      });
 
-        // アニメーション
-        const toX = posX + (Math.random() * 10 - 5);
-        const toY = posY + (Math.random() * 10 - 5);
-        const toZ = posZ + (Math.random() * 10 - 5);
-        particle.setAttribute('animation', {
-          property: 'position',
-          to: `${toX} ${toY} ${toZ}`,
-          dur: 5000 + Math.random() * 5000, 
-          easing: 'easeInOutSine',
-          dir: 'alternate',
-          loop: true
-        });
+      particle.setAttribute('position', `${posX} ${posY} ${posZ}`);
+      particle.setAttribute('material', {
+        color: color,
+        opacity: 0.7,
+        transparent: true,
+        side: 'double'
+      });
 
-        // 透明度を変えて点滅させる
-        const fadeDur = 1000 + Math.random() * 1000;
-        particle.setAttribute('animation__fade', {
-          property: 'material.opacity',
-          from: 0.3,
-          to: 1.0,
-          dur: fadeDur,
-          dir: 'alternate',
-          loop: true
-        });
+      // アニメーション
+      const toX = posX + (Math.random() * 10 - 5);
+      const toY = posY + (Math.random() * 10 - 5);
+      const toZ = posZ + (Math.random() * 10 - 5);
+      particle.setAttribute('animation', {
+        property: 'position',
+        to: `${toX} ${toY} ${toZ}`,
+        dur: 5000 + Math.random() * 5000, 
+        easing: 'easeInOutSine',
+        dir: 'alternate',
+        loop: true
+      });
 
-        particle.setAttribute('look-at', '[gps-camera]');
-        scene.appendChild(particle);
-      }
+      // 透明度を変えて点滅させる
+      const fadeDur = 1000 + Math.random() * 1000;
+      particle.setAttribute('animation__fade', {
+        property: 'material.opacity',
+        from: 0.3,
+        to: 1.0,
+        dur: fadeDur,
+        dir: 'alternate',
+        loop: true
+      });
+
+      particle.setAttribute('look-at', '[gps-camera]');
+      scene.appendChild(particle);
+
+      // 一定時間が経過したら消滅、再生成
+      setTimeout(() => {
+        scene.removeChild(particle);
+        createParticle();
+      }, LIFETIME);
+    }
+
+    // 初回の生成
+    for(let i = 0; i < MAX_PARTICLES; i++) {
+      createParticle();
+    }
   });
   
 </script>
