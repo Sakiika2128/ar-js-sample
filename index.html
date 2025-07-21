@@ -4,12 +4,14 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Location-based AR.jsのテスト</title>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <!-- A-Frameライブラリ -->
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <!-- GPS -->
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
+    <!-- カメラ -->
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
+    <!-- パーティクル用コンポーネント読み込み -->
+    <script src="https://unpkg.com/aframe-gps-entity-place@1.7.0/dist/aframe-gps-entity-place.min.js"></script>
   </head>
 
   <body style="margin: 0; overflow: hidden;">
@@ -20,145 +22,148 @@
     >
 
       <a-assets timeout="10000">
-        <!-- 天気 -->
-        <img id="unknown" src="./loading.gif" title="unknown">
-        <img id="sunny" src="./weathers/MBSL23-003-0.png" title="sunny">
-        <img id="cloudy" src="./weathers/cloudy.png" title="cloudy">
-        <img id="rainy" src="./weathers/MSRD23-003-0.png" title="rain">
-        <img id="snowy" src="./weathers/snowy.png" title="snowy">
-
-        <!-- シャッターイベント -->
-        <img id="shuttered" src="./M-03013.png" title="shuttered">
+        <img id="oinari" src="./images/M-09385-0.png" title="oinari">
+        <img id="kokutou" src="./images/M-09385-2.png" title="kokutou">
       </a-assets>
 
-      <!-- 天気 -->
-      <a-entity id="weather-image-anchor"
-        gps-entity-place="latitude: 35.7046486; longitude: 139.6383561;">
-      </a-entity>
+      <!-- おいなりさん -->
+      <a-image
+        src="#oinari"
+        gps-entity-place="latitude: 35.704676490307065; longitude: 139.6383028910223;"
+        look-at="[gps-camera]"
+        scale="10 10 10"
+        position="0 50 0"></a-image>
 
-      <!-- 時間帯 -->
-      <a-entity id="time-text-anchor"
-        gps-entity-place="latitude: 35.7047621; longitude: 139.6362912;">
-      </a-entity>
-
-      <!-- カメラボタン -->
-      <button id="shutter-btn" title="shutter-btn">
-        <i class="bi bi-camera"></i> 
-      </button>
+      <!-- 黒糖さん -->
+      <a-image
+        src="#kokutou"
+        gps-entity-place="latitude: 35.70468018962566; longitude: 139.63844684828968;"
+        look-at="[gps-camera]"
+        scale="10 10 10"
+        position="0 70 0"></a-image>
 
       <!-- カメラ -->
       <a-camera gps-camera rotation-reader> </a-camera>
     </a-scene>
   </body>
-  <style>
-    #shutter-btn {
-      position: absolute; 
-      bottom: 20px; 
-      left: 50%; 
-      transform: translateX(-50%);
-      padding: 12px 20px; 
-      font-size: 18px; 
-      border-radius: 10px; 
-      border: none;
-      background-color: #6fcfff; 
-      color: white; 
-      z-index: 999;
-    }
-  </style>
-  <script>
-      window.addEventListener('load', () => {
-        // 適当に場所を指定して緯度、経度を指定
-        const lat = 35.7046486;
-        const lon = 139.6383561;
-        const apiKey = "85d58a3e59a7469a65d625479f26ff17";
-
-        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
-          .then(response => response.json())
-          .then(data => {
-            // 天気
-            const weather = data.weather[0].main;
-            const imageAnchor = document.getElementById('weather-image-anchor');
-            const imageEl = document.createElement('a-image');
-
-            let imgId = "#unknown"; // デフォルト画像
-
-            switch (weather) {
-              case "Clear":
-                imgId = "#sunny";
-                break;
-              case "Clouds":
-                imgId = "#cloudy";
-                break;
-              case "Rain":
-                imgId = "#rainy";
-                break;
-              case "Snow":
-                imgId = "#snowy";
-                break;
-            }
-
-            imageEl.setAttribute('src', imgId);
-            imageEl.setAttribute('position', '0 50 0');
-            imageEl.setAttribute('scale', '15 15 15');
-            imageEl.setAttribute('title', weather);
-            imageEl.setAttribute('look-at', '[gps-camera]');
-            imageAnchor.appendChild(imageEl);
-
-            // タップイベント
-            imageEl.addEventListener('click', () => {
-              const messageEl = document.createElement('a-text');
-              messageEl.setAttribute('value', 'タップされました！');
-              messageEl.setAttribute('position', '0 30 0');
-              messageEl.setAttribute('scale', '10 10 10');
-              messageEl.setAttribute('color', '#00ff00');
-              messageEl.setAttribute('font-weight', 'bold');
-              messageEl.setAttribute('look-at', '[gps-camera]');
-              imageAnchor.appendChild(messageEl);
-            });
-
-            // 時間帯
-            const now = new Date();
-            const hour = now.getHours();
-            let message = 'こんにちは！'; 
-
-            if(hour >= 5 && hour < 11) {
-              message = '5:00~10:59です';
-            } else if(hour >= 11 && hour < 17) {
-              message = '11:00~16:59です';
-            } else if(hour >= 17 && hour < 19) {
-              message = '17:00~18:59です';
-            } else {
-              message = '19:00~です'
-            }
-
-            const textAnchor = document.getElementById('time-text-anchor');
-            const textEl = document.createElement('a-text');
-
-            textEl.setAttribute('value', message);
-            textEl.setAttribute('position', '0 50 0');
-            textEl.setAttribute('scale', '20 20 20');
-            textEl.setAttribute('align', 'center');
-            textEl.setAttribute('color', '#ff0000');
-            textEl.setAttribute('font-weight', 'bold');
-            textEl.setAttribute('look-at', '[gps-camera]');
-
-            textAnchor.appendChild(textEl);
-          });
-
-          // シャッターイベント
-          const btn = document.getElementById('shutter-btn');
-          let shutteredImgId = '#shuttered';
-
-          btn.addEventListener('click', () => {
-            const shutteredImage = document.createElement('a-image');
-            shutteredImage.setAttribute('src', shutteredImgId);
-            shutteredImage.setAttribute('position', '-10 -30 -10');
-            shutteredImage.setAttribute('scale', '10 10 10');
-            shutteredImage.setAttribute('rotate', '0 45 0');
-            shutteredImage.setAttribute('look-at', '[gps-camera]');
-            imageAnchor.appendChild(shutteredImage);
-          });
-
-        });
-  </script>
 </html>
+<script>
+  // 鬼火みたいなパーティクルを自動生成する
+  // const MAX_PARTICLES = 20;
+
+  // function createRandomSphere() {
+  //   const scene = document.querySelector('a-scene');
+  //   const sphere = document.createElement('a-sphere');
+
+  //   // サイズをランダムに設定
+  //   const radius = Math.random() * 0.15 + 0.05;
+  //   sphere.setAttribute('radius', radius);
+
+  //   // デフォルトの位置をランダム生成
+  //   const posX = Math.random() * 100;
+  //   const posY = Math.random() * 100;
+  //   const posZ = Math.random() * 100;
+  //   sphere.setAttribute('position', `${posX} ${posY} ${posZ}`);
+
+  //   // 色をランダムで変更
+  //   // colors = [赤、黄、黄緑、水色、紫]
+  //   const colors = ['#ff5e57', '#ffd32a', '#32ff7e', '#18dcff', '#7d5fff'];
+  //   const color = colors[Math.floor(Math.random() * colors.length)];
+  //   sphere.setAttribute('color', color);
+  //   // 透過
+  //   sphere.setAttribute('material', 'opacity: 0.7; transparent: true;');
+
+  //   // 移動方向（ランダム）
+  //   const toX = posX + (Math.random() * 10 - 5);
+  //   const toY = posY + (Math.random() * 10 - 5);
+  //   const toZ = posZ + (Math.random() * 10 - 5);
+  //   sphere.setAttribute('animation', {
+  //     property: 'position',
+  //     to: `${toX} ${toY} ${toZ}`,
+  //     dur: 5000 + Math.random() * 5000, // 5〜10秒で移動する
+  //     dir: 'alternate',
+  //     easing: 'easeInOutSine',
+  //     loop: true
+  //   });
+
+  //   // 丸を生成
+  //   sphere.setAttribute('geometry', {
+  //     primitive: 'sphere',
+  //     segments: 32
+  //   });
+
+  //   sphere.setAttribute('animation-mixer');
+  //   scene.appendChild(sphere);
+  // }
+
+  // // 画面が読み込まれたらパーティクルを生成する
+  // window.addEventListener('DOMContentLoaded', () => {
+  //   for(let i = 0; i < MAX_PARTICLES; i++) {
+  //     createRandomSphere();
+  //   }
+  // });
+
+
+  const MAX_PARTICLES = 20;
+
+  window.addEventListener('load', () => {
+      const scene = document.querySelector('a-scene');
+      for(let i = 0; i < MAX_PARTICLES; i++) {
+        const particle = document.createElement('a-entity');
+
+        // デフォルト位置はランダムで
+        const posX = (Math.random() - 0.5) * 10;
+        const posY = Math.random() * 2 + 1;
+        const posZ = (Math.random() - 0.5) * 10;
+
+        // 色もランダム生成
+        const color = `hsl(${Math.random() * 360}, 100%, 70%)`;
+
+        // サイズをランダム生成
+        const size = Math.random() * 0.15 + 0.05;
+
+        // 丸を生成
+        particle.setAttribute('geometry', {
+          primitive: 'sphere',
+          radius: size,
+          segments: 32
+        });
+
+        particle.setAttribute('position', `${posX} ${posY} ${posZ}`);
+        particle.setAttribute('material', {
+          color: color,
+          opacity: 0.7,
+          transparent: true,
+          side: 'double'
+        });
+
+        // アニメーション
+        const toX = posX + (Math.random() * 10 - 5);
+        const toY = posY + (Math.random() * 10 - 5);
+        const toZ = posZ + (Math.random() * 10 - 5);
+        particle.setAttribute('animation', {
+          property: 'position',
+          to: `${toX} ${toY} ${toZ}`,
+          dur: 5000 + Math.random() * 5000, 
+          easing: 'easeInOutSine',
+          dir: 'alternate',
+          loop: true
+        });
+
+        // 透明度を変えて点滅させる
+        const fadeDur = 1000 + Math.random() * 1000;
+        particle.setAttribute('animation__fade', {
+          property: 'material.opacity',
+          from: 0.3,
+          to: 1.0,
+          dur: fadeDur,
+          dir: 'alternate',
+          loop: true
+        });
+
+        particle.setAttribute('look-at', '[gps-camera]');
+        scene.appendChild(particle);
+      }
+  });
+  
+</script>
