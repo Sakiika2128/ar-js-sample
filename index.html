@@ -62,9 +62,6 @@
       const posY = Math.random() * 2 + 1;
       const posZ = (Math.random() - 0.5) * 10;
 
-      // 色もランダム生成
-      const color = `hsl(${Math.random() * 360}, 100%, 70%)`;
-
       // サイズをランダム生成
       const size = Math.random() * 0.15 + 0.05;
 
@@ -77,7 +74,8 @@
 
       particle.setAttribute('position', `${posX} ${posY} ${posZ}`);
       particle.setAttribute('material', {
-        color: color,
+        color: getOrbColorByTime()['color'],    // 時間帯により変化
+        emissive: getOrbColorByTime()['emissive'],  // 時間帯により変化
         opacity: 0.7,
         transparent: true,
         side: 'double'
@@ -90,7 +88,7 @@
       particle.setAttribute('animation', {
         property: 'position',
         to: `${toX} ${toY} ${toZ}`,
-        dur: 5000 + Math.random() * 5000, 
+        dur: 9000 + Math.random() * 5000, 
         easing: 'easeInOutSine',
         dir: 'alternate',
         loop: true
@@ -122,5 +120,24 @@
       createParticle();
     }
   });
+
+  // 時間帯で色を変化させる
+  function getOrbColorByTime() {
+    const hour = new Date().getHours();
+    const morning = 14;
+    const noon = 16;
+    const evening = 18;
+    const night = 20;
+
+    if(hour < morning) {
+      return { time: 'morning', color: '#88ccff', emissive: '#ddffff' };
+    } else if(hour < noon) {
+      return { time: 'noon', color: '#ffeeaa', emissive: '#ffffff' };
+    } else if(hour < evening) {
+      return { time: 'evening', color: '#ff9966', emissive: '#ffaa88' };
+    } else {
+      return { time: 'night', color: '#6633aa', emissive: '#aa88ff' };
+    }
+  }
   
 </script>
