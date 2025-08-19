@@ -1,6 +1,6 @@
 <html>
   <head>
-    <meta lang="jp" name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta lang="jp" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Location-based AR.jsのテスト</title>
@@ -24,36 +24,61 @@
           color="red" 
           position="0 10 0" 
           scale="5 5 5"
-          look-at="[gps-camera]"
           animation="property: rotation; to: 0 360 0; loop: true; dur: 3000">
         </a-box>
       </a-entity>
 
       <!-- フォーク -->
       <a-entity id="fork-model-anchor"
-        gps-entity-place="latitude: 35.70466116; longitude: 139.6384704;" look-at="[gps-camera]">
+        gps-entity-place="latitude: 35.70466116; longitude: 139.6384704;">
         <a-gltf-model 
           src="./assets/fork.glb" 
           position="0 5 0" 
-          scale="10 10 10"
+          scale="5 5 5"
           rotation="-90 0 0">
         </a-gltf-model>
       </a-entity>
 
       <!-- りんご -->
       <a-entity id="apple-model-anchor"
-        gps-entity-place="latitude: 35.7045398; longitude: 139.6381205;" look-at="[gps-camera]">
+        gps-entity-place="latitude: 35.7045398; longitude: 139.6381205;">
         <a-gltf-model 
           src="./assets/apple.glb" 
           position="0 5 0" 
-          scale="15 15 15">
+          scale="5 5 5">
         </a-gltf-model>
       </a-entity>
 
       <!-- カメラ -->
-      <a-camera gps-camera rotation-reader> </a-camera>
+      <a-camera gps-camera rotation-reader look-controls-enabled="true"></a-camera>
     </a-scene>
   </body>
+  
+  <script>
+    // Android Chromeで開いた場合の画角を調整
+    window.addEventListener('DOMContentLoaded', () => {
+      // ユーザーエージェントでAndroid Chromeを検出
+      const userAgent = navigator.userAgent;
+      const isAndroid = /Android/.test(userAgent);
+      const isChrome = /Chrome/.test(userAgent);
+      const isAndroidChrome = isAndroid && isChrome;
+
+      const camera = document.querySelector('a-camera');
+      const fovDisplay = document.querySelector('#fovDisplay');
+      
+      if (camera) {        
+        if (isAndroidChrome) {
+          // Android Chrome特有の設定
+          // Android Chromeの場合は画角を小さく設定
+          const fovValue = 50;
+          camera.setAttribute('fov', fovValue);
+          camera.setAttribute('look-controls-enabled', 'false');
+          camera.setAttribute('wasd-controls-enabled', 'false');
+          camera.setAttribute('camera', 'active: true');
+        }
+      }
+    });
+  </script>
   <!-- <script>
       window.addEventListener('load', () => {
         // 適当に場所を指定して緯度、経度を指定
